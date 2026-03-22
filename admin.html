@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Netflix Pro</title>
+</head>
+
+<body>
+
+<h2>Upload de filmes</h2>
+
+<input type="file" id="video">
+<button onclick="uploadFilme()">Enviar</button>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const supabase = window.supabase.createClient(
+"https://jsnpcyezfrpvdhjvhsxz.supabase.co",
+"SUA_CHAVE_PUBLICA"
+);
+
+async function uploadFilme(){
+
+let file = document.getElementById("video").files[0];
+
+let { data, error } = await supabase.storage
+.from("filmes")
+.upload(file.name, file);
+
+if(error){
+alert("erro");
+}else{
+alert("enviado");
+}
+
+}
+
+</script>
+
+</body>
+</html>
