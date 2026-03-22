@@ -1,41 +1,39 @@
 <!DOCTYPE html>
 <html>
-<body>
+<body style="background:black;color:white">
 
-<h2>Login</h2>
+<h1>ADMIN MASTER</h1>
 
-<input id="email" placeholder="email">
-<input id="senha" type="password">
+<input id="titulo">
+<input id="url">
 
-<button onclick="login()">Entrar</button>
+<button onclick="add()">Enviar Filme</button>
 
 <script>
 
-const url="https://SEU.supabase.co"
+const admin="admin@gmail.com"
+
+if(localStorage.email!=admin){
+location="login.html"
+}
+
+const url="https://SEU.supabase.co/rest/v1/filmes"
 const key="SUA_KEY"
 
-async function login(){
+function add(){
 
-let email=document.getElementById("email").value
-let senha=document.getElementById("senha").value
-
-let r=await fetch(url+"/auth/v1/token?grant_type=password",{
+fetch(url,{
 method:"POST",
 headers:{
 apikey:key,
+Authorization:"Bearer "+key,
 "Content-Type":"application/json"
 },
 body:JSON.stringify({
-email:email,
-password:senha
+titulo:titulo.value,
+url:url.value
 })
 })
-
-let d=await r.json()
-
-localStorage.token=d.access_token
-
-location="admin.html"
 
 }
 
