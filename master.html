@@ -1,40 +1,73 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>MASTER CONTROL</title>
+<meta charset="UTF-8">
+<title>MASTER SUPREMO</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <style>
-
 body{
 background:black;
-color:#00ff00;
-font-family:monospace;
-margin:0;
+color:white;
+font-family:Arial;
 }
 
-.topo{
-background:#001100;
-padding:15px;
-font-size:25px;
-text-align:center;
-border-bottom:2px solid #00ff00;
+h1{
+color:red;
 }
 
-.menu{
-width:200px;
-height:100vh;
-background:#000;
-float:left;
-border-right:2px solid #00ff00;
+input{
+padding:5px;
+margin:5px;
 }
 
-.menu button{
-width:100%;
-padding:10px;
-background:black;
-color:#00ff00;
-border:none;
-border-bottom:1px solid #00ff00;
+button{
+padding:5px;
+background:red;
+color:white;
+border:0;
+}
+</style>
+
+</head>
+<body>
+
+<h1>PAINEL MASTER SUPREMO</h1>
+
+<input id="nome" placeholder="Nome do filme">
+<input id="link" placeholder="Link do filme">
+
+<button onclick="add()">Adicionar</button>
+
+<hr>
+
+<div id="lista"></div>
+
+<script>
+
+const supabase = supabase.createClient(
+"https://jsnpcyezfrpvdhjvhsxz.supabase.co",
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+);
+
+async function add(){
+
+let nome = document.getElementById("nome").value
+let link = document.getElementById("link").value
+
+await supabase.from("filmes").insert([
+{nome:nome,link:link}
+])
+
+carregar()
+
+}
+
+async function carregar(){
+
+let { data } =
+awaitborder-bottom:1px solid #00ff00;
 cursor:pointer;
 }
 
