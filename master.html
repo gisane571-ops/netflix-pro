@@ -6,35 +6,84 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
-<style>
-body{
-background:black;
-color:white;
-font-family:Arial;
-}
-
-h1{
-color:red;
-}
-
-input{
-padding:5px;
-margin:5px;
-}
-
-button{
-padding:5px;
-background:red;
-color:white;
-border:0;
-}
-</style>
-
 </head>
-<body>
 
-<h1>PAINEL MASTER SUPREMO</h1>
+<body style="background:black;color:white">
 
+<h1 style="color:red">PAINEL MASTER SUPREMO</h1>
+
+<input id="nome" placeholder="Nome do filme">
+<input id="link" placeholder="Link do filme">
+
+<button onclick="addFilme()">Adicionar</button>
+
+<hr>
+
+<div id="lista"></div>
+
+<script>
+
+const supabaseUrl = "https://jsnpcyezfrpvdhjvhsxz.supabase.co"
+const supabaseKey = "COLE_SUA_KEY_AQUI"
+
+const supabase = window.supabase.createClient(
+supabaseUrl,
+supabaseKey
+)
+
+async function addFilme(){
+
+let nome = document.getElementById("nome").value
+let link = document.getElementById("link").value
+
+await supabase
+.from("filmes")
+.insert([{ nome, link }])
+
+carregar()
+
+}
+
+async function carregar(){
+
+let { data } = await supabase
+.from("filmes")
+.select("*")
+
+let html = ""
+
+data.forEach(f=>{
+
+html += `
+<div>
+${f.nome}
+<button onclick="rem(${f.id})">X</button>
+</div>
+`
+
+})
+
+document.getElementById("lista").innerHTML = html
+
+}
+
+async function rem(id){
+
+await supabase
+.from("filmes")
+.delete()
+.eq("id", id)
+
+carregar()
+
+}
+
+carregar()
+
+</script>
+
+</body>
+</html>
 <input id="nome" placeholder="Nome do filme">
 <input id="link" placeholder="Link do filme">
 
