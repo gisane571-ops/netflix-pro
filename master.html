@@ -23,13 +23,15 @@
 
 <script>
 
-const supabaseUrl = "https://jsnpcyezfrpvdhjvhsxz.supabase.co"
-const supabaseKey = "sb_publishable__HyAwWlUWY1HCUPm4ydWgg_aWcpsV4E"
+const supabaseUrL = "https://jsnpcyezfrpvdhjvhsxz.supabase.co";
+
+const supabaseKey = "sb_publishable__HyAwWlUWY1HCUPm4ydWgg_aWcpsV4E";
 
 const supabase = window.supabase.createClient(
-supabaseUrl,
-supabaseKey
-)
+  supabaseUrL,
+  supabaseKey
+);
+
 
 async function addFilme(){
 
