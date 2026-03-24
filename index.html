@@ -1,108 +1,112 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>CORE AI ROBÔ</title>
-
-<style>
-
-body{
-background:black;
-color:#00ff00;
-font-family:monospace;
-margin:0;
-}
-
-header{
-background:#111;
-padding:10px;
-}
-
-button{
-background:black;
-color:#00ff00;
-border:1px solid #00ff00;
-padding:5px;
-}
-
-#console{
-height:300px;
-overflow:auto;
-border:1px solid #00ff00;
-margin:10px;
-padding:5px;
-}
-
-input{
-width:80%;
-background:black;
-color:#00ff00;
-border:1px solid #00ff00;
-}
-
-</style>
-
-</head>
-
-<body>
-
-<header>
-
-<h2>CORE AI CONTROL</h2>
-
-<button onclick="send('scan')">SCAN</button>
-<button onclick="send('edit')">EDIT</button>
-<button onclick="send('data')">DATA</button>
-
-</header>
-
-<div id="console">
-
-> online
-
-</div>
-
-<input id="cmd">
-<button onclick="exec()">EXEC</button>
-
 <script>
 
-API="https://SEU-SERVIDOR.onrender.com/cmd"
+const API_URL = "https://SEU-SERVIDOR.onrender.com/cmd"
 
-function log(t){
 
-let c=document.getElementById("console")
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('closed');
+}
 
-c.innerHTML+="<br>"+t
 
-c.scrollTop=c.scrollHeight
+function runCmd(type, msg) {
+
+    printLog(msg, 'accent');
+
+    fetch(API_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            command: type
+        })
+    })
+    .then(r => r.json())
+    .then(data => {
+
+        printLog("Servidor respondeu: " + data.reply, "success")
+        addToMemory(type + " OK")
+
+    })
+    .catch(err => {
+        printLog("ERRO servidor", "dim")
+    })
 
 }
 
-function send(c){
 
-log("> "+c)
+function manualExec() {
 
-fetch(API,{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({cmd:c})
-})
-.then(r=>r.json())
-.then(d=>log(d.res))
+    const input = document.getElementById('user-input');
+
+    if(input.value.trim() === "") return
+
+    const ordem = input.value
+
+    printLog("ENVIANDO: " + ordem, "white")
+
+
+    fetch(API_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            command: ordem
+        })
+    })
+    .then(r => r.json())
+    .then(data => {
+
+        printLog(data.reply, "success")
+        addToMemory(ordem)
+
+    })
+    .catch(err => {
+        printLog("ERRO API", "dim")
+    })
+
+
+    input.value = ""
+
 }
 
-function exec(){
 
-let v=document.getElementById("cmd").value
+function printLog(text, style) {
 
-send(v)
+    const consoleEl = document.getElementById('console');
+
+    const line = document.createElement('div');
+
+    let color = "#94a3b8";
+
+    if(style === 'accent') color = "#38bdf8";
+    if(style === 'success') color = "#10b981";
+    if(style === 'white') color = "#ffffff";
+    if(style === 'dim') color = "#475569";
+
+    line.innerHTML =
+    `[${new Date().toLocaleTimeString()}] 
+    <span style="color:${color}">> ${text}</span>`
+
+    consoleEl.appendChild(line)
+
+    consoleEl.scrollTop = consoleEl.scrollHeight
+
+}
+
+
+function addToMemory(text) {
+
+    const mem = document.getElementById('memory-log');
+
+    const item = document.createElement('div');
+
+    item.innerHTML = "# " + text
+
+    mem.prepend(item)
 
 }
 
 </script>
-
-</body>
-</html>
