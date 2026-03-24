@@ -1,14 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>CORE AI ROBÔ</title>
 
-.tela{
-margin-left:200px;
-padding:20px;
-}
+<style>
 
-input{
+body{
 background:black;
 color:#00ff00;
-border:1px solid #00ff00;
-padding:5px;
+font-family:monospace;
+margin:0;
+}
+
+header{
+background:#111;
+padding:10px;
 }
 
 button{
@@ -18,58 +25,80 @@ border:1px solid #00ff00;
 padding:5px;
 }
 
+#console{
+height:300px;
+overflow:auto;
+border:1px solid #00ff00;
+margin:10px;
+padding:5px;
+}
+
+input{
+width:80%;
+background:black;
+color:#00ff00;
+border:1px solid #00ff00;
+}
+
 </style>
 
 </head>
 
 <body>
 
-<div class="topo">
-MASTER CONTROL PANEL
-</div>
+<header>
 
-<div class="menu">
+<h2>CORE AI CONTROL</h2>
 
-<button onclick="mostrar('dash')">DASHBOARD</button>
-<button onclick="mostrar('user')">USUARIOS</button>
-<button onclick=mostrar"('filme')">FILMES</button>
-<button onclick="mostrar('upload')">UPLOAD</button>
+<button onclick="send('scan')">SCAN</button>
+<button onclick="send('edit')">EDIT</button>
+<button onclick="send('data')">DATA</button>
 
-</div>
+</header>
 
-<div class="tela" id="tela">
+<div id="console">
 
-<h2>Bem vindo DONO</h2>
+> online
 
 </div>
+
+<input id="cmd">
+<button onclick="exec()">EXEC</button>
 
 <script>
 
-function mostrar(x){
+API="https://SEU-SERVIDOR.onrender.com/cmd"
 
-if(x=="dash"){
-tela.innerHTML="<h2>DASHBOARD</h2>"
+function log(t){
+
+let c=document.getElementById("console")
+
+c.innerHTML+="<br>"+t
+
+c.scrollTop=c.scrollHeight
+
 }
 
-if(x=="user"){
-tela.innerHTML="<h2>USUARIOS</h2>"
+function send(c){
+
+log("> "+c)
+
+fetch(API,{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({cmd:c})
+})
+.then(r=>r.json())
+.then(d=>log(d.res))
 }
 
-if(x=="filme"){
-tela.innerHTML="<h2>FILMES</h2>"
-}
+function exec(){
 
-if(x=="upload"){
-tela.innerHTML=`
-<h2>UPLOAD</h2>
+let v=document.getElementById("cmd").value
 
-<input id="nome" placeholder="nome">
-<input id="link" placeholder="link video">
-
-<button onclick="salvar()">SALVAR</button>
-
-`
-}
+send(v)
 
 }
 
