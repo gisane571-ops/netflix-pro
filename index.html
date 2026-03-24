@@ -1,17 +1,79 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Netflix Pro</title>
+
+.tela{
+margin-left:200px;
+padding:20px;
+}
+
+input{
+background:black;
+color:#00ff00;
+border:1px solid #00ff00;
+padding:5px;
+}
+
+button{
+background:black;
+color:#00ff00;
+border:1px solid #00ff00;
+padding:5px;
+}
+
+</style>
+
 </head>
 
-<body style="background:black;color:white;text-align:center">
+<body>
 
-<h1>NETFLIX PRO</h1>
+<div class="topo">
+MASTER CONTROL PANEL
+</div>
 
-<a href="master.html">
-<button>ENTRAR</button>
-</a>
+<div class="menu">
+
+<button onclick="mostrar('dash')">DASHBOARD</button>
+<button onclick="mostrar('user')">USUARIOS</button>
+<button onclick=mostrar"('filme')">FILMES</button>
+<button onclick="mostrar('upload')">UPLOAD</button>
+
+</div>
+
+<div class="tela" id="tela">
+
+<h2>Bem vindo DONO</h2>
+
+</div>
+
+<script>
+
+function mostrar(x){
+
+if(x=="dash"){
+tela.innerHTML="<h2>DASHBOARD</h2>"
+}
+
+if(x=="user"){
+tela.innerHTML="<h2>USUARIOS</h2>"
+}
+
+if(x=="filme"){
+tela.innerHTML="<h2>FILMES</h2>"
+}
+
+if(x=="upload"){
+tela.innerHTML=`
+<h2>UPLOAD</h2>
+
+<input id="nome" placeholder="nome">
+<input id="link" placeholder="link video">
+
+<button onclick="salvar()">SALVAR</button>
+
+`
+}
+
+}
+
+</script>
 
 </body>
 </html>
